@@ -9,6 +9,12 @@
     @apply transition-all duration-150 ease-in-out;
   }
   .border-color {
-    @apply border-gray 
+    @apply border-[#EBECF2] dark:border-[#EBECF2]/10;
+  }
+  .card {
+    @apply bg-light dark:bg-dark-400 rounded-xl p-4 border border-[#EDF2F7] dark:border-[#EBECF2]/10;
+  }
+  .card-title {
+    @apply font-semibold text-lg;
   }
 }
