@@ -21,7 +21,7 @@
 
 <div class={is_dark_mode ? "dark" : ""}>
   <div
-    class="font-sans bg-red-400 text-dark dark:bg-dark dark:text-light-400 transition-default min-h-screen flex"
+    class="font-sans bg-light-400 text-dark dark:bg-dark dark:text-light-400 transition-default min-h-screen flex"
   >
     <aside
       class="border-r border-color p-2 flex flex-col gap-6 justify-between items-center"
