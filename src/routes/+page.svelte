@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import PlatformMinCard from "../components/PlatformMinCard.svelte";
 
   let trends_options = {
     chart: {
@@ -145,6 +146,19 @@
 
   let orders_container: any;
 
+  let top_platforms = [
+    {
+      name: "hello",
+      price: "20343",
+      color: "bg-primary",
+    },
+    {
+      name: "Hi",
+      price: "40345",
+      color: "bg-blue",
+    },
+  ];
+
   onMount(async () => {
     const ApexCharts = (await import("apexcharts")).default;
     const chart = new ApexCharts(trends_container, trends_options);
@@ -189,21 +203,16 @@
       <a href="/orders" class="text-primary">See all</a>
     </div>
     <div>
-      <ul>
-        <li>
-          <div class="space-y-1">
-            <h3 class="font-semibold">Book Bazaar</h3>
-            <div class="bg-light-400 dark:bg-dark rounded-full relative h-4">
-              <div
-                class="bg-blue rounded-full w-[50%] transition-default relative h-4"
-              ></div>
-            </div>
-            <div class="flex justify-between items-center text-mute text-sm">
-              <p>$2,500,000</p>
-              <p>+15%</p>
-            </div>
-          </div>
-        </li>
+      <ul class="space-y-4">
+        {#each top_platforms as platform}
+          <li>
+            <PlatformMinCard
+              title={platform.name}
+              price={platform.price}
+              color={platform.color}
+            />
+          </li>
+        {/each}
       </ul>
     </div>
   </section>
