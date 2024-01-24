@@ -1,6 +1,8 @@
 <script>
+  import { onMount } from "svelte";
   import Icon from "../components/Icon.svelte";
   import "./base.css";
+
   const pages = [
     { title: "home", href: "/" },
     { title: "trends", href: "/trends" },
@@ -15,9 +17,17 @@
   ];
 
   let is_dark_mode = false;
-  function toogleDarkMode() {
-    is_dark_mode = !is_dark_mode;
+  function setDarkMode() {
+    is_dark_mode = true;
+    localStorage.setItem("is_dark_mode", "true");
   }
+  function setLightMode() {
+    is_dark_mode = false;
+    localStorage.setItem("is_dark_mode", "false");
+  }
+  onMount(() => {
+    is_dark_mode = localStorage.getItem("is_dark_mode") == "true";
+  });
 </script>
 
 <div class={is_dark_mode ? "dark" : ""}>
@@ -74,13 +84,13 @@
             class="bg-light dark:bg-dark-400 p-4 px-1 mx-2 rounded-full flex flex-col gap-2 items-center fill-white stroke-none"
           >
             <button
-              on:click={toogleDarkMode}
+              on:click={setLightMode}
               class="rounded-full p-2 fill-white dark:fill-[#B2ABAB] bg-primary dark:bg-transparent transition-default"
             >
               <Icon title="sun" />
             </button>
             <button
-              on:click={toogleDarkMode}
+              on:click={setDarkMode}
               class="rounded-full p-2 dark:fill-white fill-[#B2ABAB] dark:bg-primary bg-transparent transition-default"
             >
               <Icon title="moon" />

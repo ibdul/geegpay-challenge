@@ -1,5 +1,4 @@
 responsiveness
-theme switching local-storage integration
 error pages
 dropdown menus
 back to top btn + jump to content button
