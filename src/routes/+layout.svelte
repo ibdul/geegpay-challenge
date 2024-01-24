@@ -108,7 +108,7 @@
               >
                 <span
                   class={`w-1.5 block rounded-l-md h-5  ${
-                    index == 0
+                    false
                       ? "bg-[#0D062D] dark:bg-light"
                       : "group-hover/link:bg-dark/20 group-hover/link:dark:bg-light/20"
                   }`}
@@ -126,7 +126,7 @@
     </aside>
     <div class="flex-1">
       <header
-        class="flex justify-between items-center p-4 border-b border-color"
+        class="flex justify-between items-center py-4 px-8 border-b border-color"
       >
         <h1 class="font-semibold text-xl">Dashboard</h1>
         <div class="flex items-center gap-4">

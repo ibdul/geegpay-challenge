@@ -7,6 +7,9 @@
     chart: {
       type: "bar",
     },
+    dataLabels: {
+      enabled: false,
+    },
     tooltip: {
       enabled: true,
       followCursor: false,
@@ -21,29 +24,13 @@
       },
       style: {
         fontSize: "12px",
-        backgroundColor: "red",
       },
       x: {
         show: false,
       },
     },
     fill: {
-      colors: [
-        function ({ value, seriesIndex, w }) {
-          if (value < 55) {
-            return "rgba(240, 242, 248, 0.85)";
-          } else {
-            return "#34CAA5";
-          }
-        },
-      ],
-      type: "gradient",
-      gradient: {
-        type: "vertical",
-        gradientToColors: undefined,
-        opacityTo: 0.6,
-        stops: [10],
-      },
+      colors: ["#EBFAF6", "#39cba7"],
     },
     legend: { show: false },
     plotOptions: {
@@ -93,6 +80,7 @@
   let orders_options = {
     chart: {
       type: "area",
+      height: 80,
       toolbar: {
         autoSelected: "pan",
         show: false,
@@ -183,7 +171,7 @@
           >
             <Icon title={item} />
           </div>
-          <div bind:this={orders_container} />
+          <div bind:this={orders_container} class="max-h-20 !min-h-20" />
         </div>
         <div>
           <h2 class="text-xl font-medium capitalize text-mute">Total {item}</h2>
