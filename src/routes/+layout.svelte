@@ -54,9 +54,35 @@
       <header
         class="flex justify-between items-center p-4 border-b border-color"
       >
-        <h1>Dashboard</h1>
-        <div>
-          <p>search</p>
+        <h1 class="font-semibold text-xl">Dashboard</h1>
+        <div class="flex items-center gap-4">
+          <form>
+            <div
+              class="focus-within:outline outline-1 outline-primary rounded-full bg-white dark:bg-dark-400 px-4 py-2 border border-[#DADDDD] dark:border-mute"
+            >
+              icon
+              <input
+                type="text"
+                placeholder="Search"
+                class="bg-transparent focus:outline-none"
+              />
+            </div>
+          </form>
+          <div class="flex items-center gap-2">
+            <p>calendar</p>
+            <p class="text-sm font-medium">{new Date().toLocaleString()}</p>
+          </div>
+          <p>bell</p>
+          <div
+            class="flex items-center p-2 rounded-full gap-2 border border-color"
+          >
+            <div class="rounded-full bg-primary aspect-square w-8"></div>
+            <div class="flex flex-col">
+              <p>Ibrahim A.</p>
+              <p class="text-sm text-mute">@iAmIbdul</p>
+            </div>
+            <div>caret</div>
+          </div>
         </div>
       </header>
       <main>
