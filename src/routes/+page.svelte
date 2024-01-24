@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import PlatformMinCard from "../components/PlatformMinCard.svelte";
+  import Icon from "../components/Icon.svelte";
 
   let trends_options = {
     chart: {
@@ -173,19 +174,28 @@
     <h2 class="card-title">Sales Trends</h2>
     <div bind:this={trends_container} />
   </section>
-  <section class="col-span-2 grid grid-cols-2 gap-4">
-    {#each "order, refund, sales, income".split(", ") as item}
+  <section class="col-span-2 grid grid-cols-2 gap-4 grid-rows-2">
+    {#each "orders, refunds, sales, income".split(", ") as item}
       <div class="card flex flex-col justify-between">
-        <div class="flex justify-between items-center">
-          <p>icon</p>
+        <div class="flex justify-between items-start">
+          <div
+            class="p-2 aspect-square w-12 grid place-items-center border border-color rounded-full"
+          >
+            <Icon title={item} />
+          </div>
           <div bind:this={orders_container} />
         </div>
         <div>
-          <h2 class="text-xl font-medium capitalize text-mute">{item}</h2>
+          <h2 class="text-xl font-medium capitalize text-mute">Total {item}</h2>
           <p class="card-title text-4xl">250</p>
         </div>
-        <div class="flex items-center justify-between">
-          <p class="bg-blue text-sm rounded-full px-4 py-2">23,5%</p>
+        <div class="flex items-center justify-between text-red">
+          <p
+            class="bg-red/20 text-sm rounded-full px-4 py-2 flex gap-2 items-center"
+          >
+            <Icon title="chart-arrow-down" />
+            23,5%
+          </p>
           <div class="text-mute">vs. previous month</div>
         </div>
       </div>
