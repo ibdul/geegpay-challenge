@@ -17,6 +17,7 @@ export default {
         blue: "#54C5EB",
         yellow: "#FFB74A",
         red: "#FF4A55",
+        mute: "#787486",
         light: {
           400: "#FAFAFA",
           DEFAULT: "#FFFFFF",
