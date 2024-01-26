@@ -12,9 +12,22 @@
     @apply border-[#EBECF2] dark:border-[#EBECF2]/10;
   }
   .card {
-    @apply bg-light dark:bg-dark-400 rounded-xl p-4 border border-[#EDF2F7] dark:border-[#EBECF2]/10;
+    @apply bg-light dark:bg-dark-400 rounded-xl p-4 border border-[#EDF2F7] hover:border-dark/10 dark:border-[#EBECF2]/10 relative;
+  }
+  .card::before {
+    @apply content-[""] absolute bg-black inset-[-1px] rounded-xl z-[-1];
   }
   .card-title {
     @apply font-semibold text-lg;
   }
+}
+
+.card::before {
+  mask-image: radial-gradient(#FFF, transparent);
+  mask-position: 10px 10px;
+  transition: mask-position 1s ease-in-out;
+}
+ 
+.card:hover {
+  mask-position: right 10px bottom 10px;
 }

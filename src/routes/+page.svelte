@@ -1,7 +1,53 @@
-<script lang="ts">
+<script lang="ts" setup>
   import { onMount } from "svelte";
   import PlatformMinCard from "../components/PlatformMinCard.svelte";
   import Icon from "../components/Icon.svelte";
+  import DifferencePill from "../components/DifferencePill.svelte";
+
+  const CHART_MAX = 100;
+  const CHART_MIN = 12;
+
+  function generateRandomNumber() {
+    return Math.floor(Math.random() * (CHART_MAX - CHART_MIN) + CHART_MIN);
+  }
+
+  function generateSeries() {
+    return Array.from({ length: 7 }, () => generateRandomNumber());
+  }
+
+  const top_platform_names =
+    "Nescafe, GTBank, Astro, Midland services, Pst LLC, Milo, MTN, Airtel"
+      .split(", ")
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 4);
+
+  let top_platforms: Record<string, number[]> = {};
+
+  function initiateTopPlatforms() {
+    top_platform_names.map((platform) => {
+      const _top_platforms = top_platforms;
+      _top_platforms[platform] = [generateRandomNumber()];
+      top_platforms = _top_platforms;
+    });
+  }
+
+  initiateTopPlatforms();
+
+  function generateTopPlatformData(platform_name: string) {
+    const _top_platforms = top_platforms;
+    _top_platforms[platform_name].push(generateRandomNumber());
+    top_platforms = _top_platforms;
+  }
+
+  function sum(series: number[]) {
+    if (!series) return generateRandomNumber();
+    return series.reduce((cur, acc) => acc + cur);
+  }
+
+  function differentiateSeries(series: number[][]) {
+    if (series.length < 2) return generateRandomNumber();
+    return sum(series[series.length - 1]) - sum(series[series.length - 2]);
+  }
 
   let trends_options = {
     chart: {
@@ -43,7 +89,7 @@
     series: [
       {
         name: "sales",
-        data: [30, 40, 35, 50, 49, 60, 70, 91, 125],
+        data: generateSeries(),
       },
     ],
     states: {
@@ -77,6 +123,14 @@
   };
   let trends_container: any;
 
+  let orders_series: number[][] = [];
+  function generateOrdersChartSeries() {
+    const generated_series = generateSeries();
+    const _orders_series = orders_series;
+    _orders_series.push(generated_series);
+    orders_series = _orders_series;
+    return generated_series;
+  }
   let orders_options = {
     chart: {
       type: "area",
@@ -113,7 +167,7 @@
     series: [
       {
         name: "sales",
-        data: [30, 40, 35, 50, 49, 60, 70, 91, 125],
+        data: generateSeries(),
       },
     ],
     grid: {
@@ -135,31 +189,33 @@
 
   let orders_container: any;
 
-  let top_platforms = [
-    {
-      name: "hello",
-      price: "20343",
-      color: "bg-primary",
-    },
-    {
-      name: "Hi",
-      price: "40345",
-      color: "bg-blue",
-    },
-  ];
+  let top_platforms_colors = "bg-primary, bg-red".split(", ");
 
   onMount(async () => {
     const ApexCharts = (await import("apexcharts")).default;
-    const chart = new ApexCharts(trends_container, trends_options);
-    chart.render();
+    const _chart = new ApexCharts(trends_container, trends_options);
+    _chart.render();
+    const orders_chart = new ApexCharts(orders_container, orders_options);
+    orders_chart.render();
 
-    new ApexCharts(orders_container, orders_options).render();
+    top_platform_names.map((platform, index) => {
+      generateTopPlatformData(platform);
+    });
+
+    setInterval(() => {
+      _chart.updateSeries([{ data: generateSeries() }]);
+      orders_chart.updateSeries([{ data: generateOrdersChartSeries() }]);
+
+      top_platform_names.map((platform, index) => {
+        generateTopPlatformData(platform);
+      });
+    }, 5000);
   });
 </script>
 
 <div class="p-6 grid grid-cols-5 gap-4">
-  <section class="col-span-3 card">
-    <h2 class="card-title">Sales Trends</h2>
+  <section class="col-span-3 card space-y-4">
+    <h2 class="card-title px-4">Sales Trends</h2>
     <div bind:this={trends_container} />
   </section>
   <section class="col-span-2 grid grid-cols-2 gap-4 grid-rows-2">
@@ -175,45 +231,73 @@
         </div>
         <div>
           <h2 class="text-xl font-medium capitalize text-mute">Total {item}</h2>
-          <p class="card-title text-4xl">250</p>
-        </div>
-        <div class="flex items-center justify-between text-red">
-          <p
-            class="bg-red/20 text-sm rounded-full px-4 py-2 flex gap-2 items-center"
-          >
-            <Icon title="chart-arrow-down" />
-            23,5%
+          <p class="card-title text-4xl">
+            {sum(orders_series[orders_series.length - 1])}
           </p>
-          <div class="text-mute">vs. previous month</div>
         </div>
+        <DifferencePill difference={differentiateSeries(orders_series)} />
       </div>
     {/each}
   </section>
-  <section class="col-span-3 card">
+  <section class="col-span-3 card space-y-4">
     <div class="flex justify-between items-center">
       <h2 class="card-title">Latest orders</h2>
       <a href="/orders" class="text-primary">See all</a>
     </div>
+    <ul class="divide-y divide-mute/20 space-y-2">
+      <div class="grid grid-cols-6 text-mute py-2">
+        <p class="col-span-2">Name</p>
+        <p>Date</p>
+        <p>Amount</p>
+        <p>Status</p>
+        <p>Invoice</p>
+      </div>
+      {#each Array(5) as item}
+        <li class="grid grid-cols-6 py-2 items-center">
+          <div
+            class="col-span-2 text-black dark:text-light font-medium flex items-center gap-2"
+          >
+            <div class="aspect-square w-8 rounded-full bg-primary"></div>
+            <p>Ibrahim Abdulhameed</p>
+          </div>
+          <p class="text-mute dark:text-light-400/80">
+            {new Date().toLocaleString()}
+          </p>
+          <p class="font-semibold">$80,000</p>
+          <p class="text-primary">Paid</p>
+          <p
+            class="flex gap-2 text-black items-center stroke-black/40 dark:text-light dark:stroke-light/40"
+          >
+            <Icon title="doc-download" /> View
+          </p>
+        </li>
+      {/each}
+    </ul>
   </section>
-  <section class="col-span-2 card space-y-4">
-    <div class="flex justify-between items-center">
-      <h2 class="card-title">Top Platform</h2>
-      <a href="/orders" class="text-primary">See all</a>
-    </div>
-    <div>
-      <ul class="space-y-4">
-        {#each top_platforms as platform}
-          <li>
-            <PlatformMinCard
-              title={platform.name}
-              price={platform.price}
-              color={platform.color}
-            />
-          </li>
-        {/each}
-      </ul>
-    </div>
-  </section>
+  <div class="col-span-2">
+    <section class="card space-y-4">
+      <div class="flex justify-between items-center">
+        <h2 class="card-title">Top Platform</h2>
+        <a href="/orders" class="text-primary">See all</a>
+      </div>
+      <div>
+        <ul class="space-y-4">
+          {#each Object.entries(top_platforms) as [platform_name, data], index}
+            <li>
+              <PlatformMinCard
+                title={platform_name}
+                max={CHART_MAX}
+                {data}
+                color={top_platforms_colors[
+                  index % top_platforms_colors.length
+                ]}
+              />
+            </li>
+          {/each}
+        </ul>
+      </div>
+    </section>
+  </div>
 </div>
 
 <style>
