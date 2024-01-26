@@ -1,8 +1,15 @@
-<script lang="ts" setup>
+<script lang="ts">
   import { onMount } from "svelte";
   import PlatformMinCard from "../components/PlatformMinCard.svelte";
   import Icon from "../components/Icon.svelte";
-  import DifferencePill from "../components/DifferencePill.svelte";
+  import SummaryCard from "../components/SummaryCard.svelte";
+  import {
+    sum,
+    generateSeries,
+    generateRandomNumber,
+    CHART_MAX,
+    CHART_MIN,
+  } from "../lib/index";
 
   function getRandomFromArray(arr: any[]) {
     return arr.sort(() => 0.5 - Math.random())[0];
@@ -64,17 +71,6 @@
     return API_URL.toString();
   }
 
-  const CHART_MAX = 100;
-  const CHART_MIN = 12;
-
-  function generateRandomNumber() {
-    return Math.floor(Math.random() * (CHART_MAX - CHART_MIN) + CHART_MIN);
-  }
-
-  function generateSeries() {
-    return Array.from({ length: 7 }, () => generateRandomNumber());
-  }
-
   const top_platform_names =
     "Nescafe, GTBank, Astro, Midland services, Pst LLC, Milo, MTN, Airtel"
       .split(", ")
@@ -97,16 +93,6 @@
     const _top_platforms = top_platforms;
     _top_platforms[platform_name].push(generateRandomNumber());
     top_platforms = _top_platforms;
-  }
-
-  function sum(series: number[]) {
-    if (!series) return generateRandomNumber();
-    return series.reduce((cur, acc) => acc + cur);
-  }
-
-  function differentiateSeries(series: number[][]) {
-    if (series.length < 2) return generateRandomNumber();
-    return sum(series[series.length - 1]) - sum(series[series.length - 2]);
   }
 
   let trends_options = {
@@ -183,80 +169,15 @@
   };
   let trends_container: any;
 
-  let orders_series: number[][] = [];
-  function generateOrdersChartSeries() {
-    const generated_series = generateSeries();
-    const _orders_series = orders_series;
-    _orders_series.push(generated_series);
-    orders_series = _orders_series;
-    return generated_series;
-  }
-  let orders_options = {
-    chart: {
-      type: "area",
-      height: 80,
-      toolbar: {
-        autoSelected: "pan",
-        show: false,
-      },
-    },
-    colors: ["#008FFB"],
-    fill: {
-      type: "gradient",
-      gradient: {
-        opacityFrom: 0.91,
-        opacityTo: 0.1,
-      },
-    },
-    brush: {
-      target: "chart2",
-      enabled: true,
-    },
-    selection: {
-      enabled: true,
-    },
-    stroke: {
-      width: 1,
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    markers: {
-      size: 0,
-    },
-    series: [
-      {
-        name: "sales",
-        data: generateSeries(),
-      },
-    ],
-    grid: {
-      borderColor: "#FF00FF05",
-    },
-    xaxis: {
-      categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999],
-      labels: { show: false },
-      axisTicks: { show: false },
-      axisBorder: { show: false },
-    },
-    legend: {
-      show: false,
-    },
-    yaxis: {
-      labels: { show: false },
-    },
-  };
-
-  let orders_container: any;
-
-  let top_platforms_colors = "bg-primary, bg-red".split(", ");
+  let top_platforms_colors = "bg-dark_blue, bg-blue, bg-yellow, bg-red".split(
+    ", ",
+  );
+  let summary_card_colors = "#66C87B, #ED544E, #ED544E, #66C87B".split(", ");
 
   onMount(async () => {
     const ApexCharts = (await import("apexcharts")).default;
     const _chart = new ApexCharts(trends_container, trends_options);
     _chart.render();
-    const orders_chart = new ApexCharts(orders_container, orders_options);
-    orders_chart.render();
 
     top_platform_names.map((platform, index) => {
       generateTopPlatformData(platform);
@@ -264,7 +185,6 @@
 
     setInterval(() => {
       _chart.updateSeries([{ data: generateSeries() }]);
-      orders_chart.updateSeries([{ data: generateOrdersChartSeries() }]);
 
       updateOrders();
 
@@ -281,24 +201,8 @@
     <div bind:this={trends_container} />
   </section>
   <section class="col-span-2 grid grid-cols-2 gap-4 grid-rows-2">
-    {#each "orders, refunds, sales, income".split(", ") as item}
-      <div class="card flex flex-col justify-between">
-        <div class="flex justify-between items-start">
-          <div
-            class="p-2 aspect-square w-12 grid place-items-center border border-color rounded-full"
-          >
-            <Icon title={item} />
-          </div>
-          <div bind:this={orders_container} class="max-h-20 !min-h-20" />
-        </div>
-        <div>
-          <h2 class="text-xl font-medium capitalize text-mute">Total {item}</h2>
-          <p class="card-title text-4xl">
-            {sum(orders_series[orders_series.length - 1])}
-          </p>
-        </div>
-        <DifferencePill difference={differentiateSeries(orders_series)} />
-      </div>
+    {#each "orders, refunds, sales, income".split(", ") as item, index}
+      <SummaryCard {item} color={summary_card_colors[index]} />
     {/each}
   </section>
   <section class="col-span-3 card space-y-4">
