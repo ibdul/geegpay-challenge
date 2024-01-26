@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { onMount } from "svelte";
   import Icon from "../components/Icon.svelte";
   import "./base.css";
@@ -25,6 +25,19 @@
     is_dark_mode = false;
     localStorage.setItem("is_dark_mode", "false");
   }
+
+  let is_notifications_open = false;
+
+  function openNotifications(e: Event) {
+    e.preventDefault();
+    is_notifications_open = true;
+  }
+
+  function closeNotifications(e: Event) {
+    e.preventDefault();
+    is_notifications_open = false;
+  }
+
   onMount(() => {
     is_dark_mode = localStorage.getItem("is_dark_mode") == "true";
   });
@@ -156,12 +169,13 @@
             <Icon title="calendar" />
             <p class="text-sm font-medium">{new Date().toLocaleString()}</p>
           </div>
-          <div
+          <button
+            on:click={openNotifications}
             class="p-2 aspect-square w-12 grid place-items-center border border-color rounded-full"
           >
             <Icon title="bell" />
-          </div>
-          <div
+          </button>
+          <button
             class="flex items-center p-2 rounded-full gap-2 border border-color"
           >
             <div class="rounded-full bg-primary aspect-square w-8"></div>
@@ -170,12 +184,45 @@
               <p class="text-sm text-mute">@iAmIbdul</p>
             </div>
             <Icon title="arrow-down" />
-          </div>
+          </button>
         </div>
       </header>
       <main>
         <slot />
       </main>
+      <div>
+        <button
+          on:click={closeNotifications}
+          class={`bg-dark/10 z-[50] backdrop-blur fixed inset-0 transition-default ${
+            is_notifications_open ? "" : "opacity-0 pointer-events-none"
+          }`}
+        ></button>
+        <div
+          class={`bg-light dark:bg-dark shadow-md z-[51] fixed right-0 w-1/4 inset-y-0 py-12 space-y-4 ${
+            is_notifications_open ? "" : "translate-x-[100%]"
+          }`}
+        >
+          <div class="flex items-center justify-between px-4">
+            <h2 class="text-xl">Notifications</h2>
+            <button class="w-2 rounded-full" on:click={closeNotifications}
+              >&times;</button
+            >
+          </div>
+          <ul class="divide-y divide-mute/10">
+            {#each Array(10) as _}
+              <li class="hover:bg-primary px-4 cursor-pointer">
+                <div class="py-2">
+                  <div class="flex items-start gap-2">
+                    <p>&mdash;</p>
+                    <h3 class="font-semibold text-lg">New Sale</h3>
+                  </div>
+                  <p class="italic opacity-80">There has been a new sale</p>
+                </div>
+              </li>
+            {/each}
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </div>
