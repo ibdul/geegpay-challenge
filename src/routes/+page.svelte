@@ -4,6 +4,65 @@
   import Icon from "../components/Icon.svelte";
   import DifferencePill from "../components/DifferencePill.svelte";
 
+  function getRandomFromArray(arr: any[]) {
+    return arr.sort(() => 0.5 - Math.random())[0];
+  }
+
+  const names =
+    "Ibrahim Abdulhameed, Micheal Jordan, Alen Turing, David Opeyemi, Mullan Green, Feltz Watson, Jonah Johnson".split(
+      ", ",
+    );
+
+  function createOrder() {
+    return {
+      name: names[Math.floor(Math.random() * names.length)],
+      date: new Date(),
+      amount: (Math.random() * (14000 - 1200) + 1200).toFixed(2),
+      is_paid: Math.random() > 0.5,
+      avatar: getAvatar(),
+    };
+  }
+
+  let orders = Array.from({ length: 4 }, createOrder);
+
+  function updateOrders() {
+    const _orders = orders;
+    _orders.unshift(createOrder());
+    orders = _orders;
+  }
+
+  function getAvatar() {
+    const API_URL = new URL("https://api.dicebear.com/7.x/personas/svg");
+    const params = [
+      {
+        title: "hair",
+        options:
+          "bald, balding, beanie, buzzcut, cap, curlyHighTop, shortCombover, fade, mohawk".split(
+            ", ",
+          ),
+      },
+      { title: "hairColor", options: "6dbb58, 54d7c7, 456dff".split(", ") },
+      { title: "clothingColor", options: "6dbb58, 54d7c7, 456dff".split(", ") },
+      {
+        title: "eyes",
+        options: "glasses, happy, open, sleep, sunglasses, wink".split(", "),
+      },
+      {
+        title: "facialHair",
+        options:
+          "beardMustache, goatee, pyramid, shadow, soulPatch, walrus".split(
+            ", ",
+          ),
+      },
+    ];
+
+    params.map((param, index) => {
+      API_URL.searchParams.set(param.title, getRandomFromArray(param.options));
+    });
+
+    return API_URL.toString();
+  }
+
   const CHART_MAX = 100;
   const CHART_MIN = 12;
 
@@ -206,6 +265,8 @@
       _chart.updateSeries([{ data: generateSeries() }]);
       orders_chart.updateSeries([{ data: generateOrdersChartSeries() }]);
 
+      updateOrders();
+
       top_platform_names.map((platform, index) => {
         generateTopPlatformData(platform);
       });
@@ -252,19 +313,21 @@
         <p>Status</p>
         <p>Invoice</p>
       </div>
-      {#each Array(5) as item}
+      {#each orders.slice(0, 4) as order}
         <li class="grid grid-cols-6 py-2 items-center">
           <div
             class="col-span-2 text-black dark:text-light font-medium flex items-center gap-2"
           >
-            <div class="aspect-square w-8 rounded-full bg-primary"></div>
-            <p>Ibrahim Abdulhameed</p>
+            <img width={50} src={order.avatar} alt="avatar" />
+            <p>{order.name}</p>
           </div>
           <p class="text-mute dark:text-light-400/80">
-            {new Date().toLocaleString()}
+            {order.date.toLocaleString()}
           </p>
-          <p class="font-semibold">$80,000</p>
-          <p class="text-primary">Paid</p>
+          <p class="font-semibold">${order.amount}</p>
+          <p class={order.is_paid ? "text-primary" : "text-red"}>
+            {order.is_paid ? "Paid" : "Not paid"}
+          </p>
           <p
             class="flex gap-2 text-black items-center stroke-black/40 dark:text-light dark:stroke-light/40"
           >
