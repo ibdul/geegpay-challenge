@@ -28,6 +28,7 @@
   function updateOrders() {
     const _orders = orders;
     _orders.unshift(createOrder());
+    _orders.pop();
     orders = _orders;
   }
 
