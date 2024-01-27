@@ -113,14 +113,12 @@
   });
 </script>
 
-<div>
+<div class="p-2 sm:p-6 xl:grid max-xl:space-y-4 xl:grid-cols-5 gap-4">
   <section class="col-span-3 card space-y-4">
     <h2 class="card-title px-4">GDP Trends</h2>
     <div bind:this={gdp_trends_container} />
   </section>
-  <section
-    class="col-span-2 md:grid max-md:space-y-4 grid-cols-2 gap-4 grid-rows-2"
-  >
+  <section class="col-span-2 space-y-4">
     <WorldBankSummaryCard item="inflation" is_percent={true} />
     <WorldBankSummaryCard item="debt_stock" unit="$" />
   </section>
