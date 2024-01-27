@@ -11,7 +11,7 @@
         {$page.status}
       </h2>
       <p>
-        {$page.error.message}
+        {$page?.error?.message}
       </p>
     </div>
   </div>
