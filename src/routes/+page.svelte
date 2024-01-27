@@ -190,9 +190,7 @@
     interval = setInterval(() => {
       _chart.updateSeries([{ data: generateSeries() }]);
 
-      viewTransition(() => {
-        updateOrders();
-      });
+      updateOrders();
 
       top_platform_names.map((platform, index) => {
         generateTopPlatformData(platform);
