@@ -73,7 +73,7 @@
       }`}
     ></button>
     <aside
-      class={`max-lg:fixed max-lg:w-1/3 z-[51] max-lg:shadow max-lg:pl-4 capitalize ${
+      class={`max-lg:fixed z-[51] max-lg:shadow max-lg:pl-4 capitalize ${
         is_sidebar_open ? "" : "max-lg:translate-x-[-100%]"
       } bg-light-400 dark:bg-dark transition-default border-r border-color py-8 flex flex-col gap-12 justify-between lg:items-center h-screen sticky top-0`}
     >
@@ -89,84 +89,87 @@
           >&times;</button
         >
       </div>
-      <nav class="flex-1 w-full text-center">
-        <ul class="flex flex-col gap-4">
-          {#each pages as page, index}
-            <li class="relative group/link">
-              <a href={page.title} title={page.title} class="nav_link">
-                <div class="nav_link__container">
-                  <div class="flex gap-2 items-center">
-                    <Icon title={page.title} />
-                    <p class="nav_item_title">
-                      {page.title}
-                    </p>
+      <div class="space-y-12 overflow-y-auto">
+        <nav class="flex-1 w-full text-center">
+          <ul class="flex flex-col gap-4">
+            {#each pages as page, index}
+              <li class="relative group/link">
+                <a href={page.title} title={page.title} class="nav_link">
+                  <div class="nav_link__container">
+                    <div class="flex gap-2 items-center">
+                      <Icon title={page.title} />
+                      <p class="nav_item_title">
+                        {page.title}
+                      </p>
+                    </div>
                   </div>
+                </a>
+                <div
+                  class="absolute inset-y-0 right-0 flex flex-col justify-center"
+                >
+                  <span
+                    class={`w-1.5 block rounded-l-md h-5  ${
+                      index == 0 ? "bg-[#0D062D] dark:bg-light" : ""
+                    }`}
+                  ></span>
                 </div>
-              </a>
-              <div
-                class="absolute inset-y-0 right-0 flex flex-col justify-center"
+              </li>
+            {/each}
+            <li
+              class="bg-light dark:bg-dark-400 w-min lg:p-4 px-1 max-lg:px-5 mx-2 rounded-full flex lg:flex-col gap-2 items-center fill-white stroke-none"
+            >
+              <button
+                on:click={setLightMode}
+                class="rounded-full p-2 fill-white dark:fill-[#B2ABAB] bg-primary dark:bg-transparent transition-default"
               >
-                <span
-                  class={`w-1.5 block rounded-l-md h-5  ${
-                    index == 0 ? "bg-[#0D062D] dark:bg-light" : ""
-                  }`}
-                ></span>
-              </div>
+                <Icon title="sun" />
+              </button>
+              <button
+                on:click={setDarkMode}
+                class="rounded-full p-2 dark:fill-white fill-[#B2ABAB] dark:bg-primary bg-transparent transition-default"
+              >
+                <Icon title="moon" />
+              </button>
             </li>
-          {/each}
-          <li
-            class="bg-light dark:bg-dark-400 w-min lg:p-4 px-1 max-lg:px-5 mx-2 rounded-full flex lg:flex-col gap-2 items-center fill-white stroke-none"
-          >
-            <button
-              on:click={setLightMode}
-              class="rounded-full p-2 fill-white dark:fill-[#B2ABAB] bg-primary dark:bg-transparent transition-default"
-            >
-              <Icon title="sun" />
-            </button>
-            <button
-              on:click={setDarkMode}
-              class="rounded-full p-2 dark:fill-white fill-[#B2ABAB] dark:bg-primary bg-transparent transition-default"
-            >
-              <Icon title="moon" />
-            </button>
-          </li>
-        </ul>
-      </nav>
-      <nav class="w-full">
-        <ul class="flex flex-col gap-4">
-          {#each extra_pages as page, index}
-            <li class="relative group/link">
-              <a href={page.title} title={page.title} class="nav_link">
-                <div class="nav_link__container">
-                  <div class="flex gap-2 items-center">
-                    <Icon title={page.title} />
-                    <p class="nav_item_title">{page.title}</p>
+          </ul>
+        </nav>
+        <nav class="w-full">
+          <ul class="flex flex-col gap-4">
+            {#each extra_pages as page, index}
+              <li class="relative group/link">
+                <a href={page.title} title={page.title} class="nav_link">
+                  <div class="nav_link__container">
+                    <div class="flex gap-2 items-center">
+                      <Icon title={page.title} />
+                      <p class="nav_item_title">{page.title}</p>
+                    </div>
                   </div>
+                </a>
+                <div
+                  class="absolute inset-y-0 right-0 flex flex-col justify-center"
+                >
+                  <span
+                    class={`w-1.5 block rounded-l-md h-5  ${
+                      false
+                        ? "bg-[#0D062D] dark:bg-light"
+                        : "group-hover/link:bg-dark/20 group-hover/link:dark:bg-light/20"
+                    }`}
+                  ></span>
                 </div>
-              </a>
-              <div
-                class="absolute inset-y-0 right-0 flex flex-col justify-center"
-              >
-                <span
-                  class={`w-1.5 block rounded-l-md h-5  ${
-                    false
-                      ? "bg-[#0D062D] dark:bg-light"
-                      : "group-hover/link:bg-dark/20 group-hover/link:dark:bg-light/20"
-                  }`}
-                ></span>
-              </div>
+              </li>
+            {/each}
+            <li class="lg:mx-auto">
+              <button class="hover:bg-primary/20 w-full nav_link">
+                <div class="flex gap-2 items-center">
+                  <Icon title="logout" />
+                  <p class="nav_item_title">Logout</p>
+                </div>
+              </button>
             </li>
-          {/each}
-          <li class="lg:mx-auto">
-            <button class="hover:bg-primary/20 w-full nav_link">
-              <div class="flex gap-2 items-center">
-                <Icon title="logout" />
-                <p class="nav_item_title">Logout</p>
-              </div>
-            </button>
-          </li>
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+      </div>
+      <div class="3xl:hidden"></div>
     </aside>
     <div class="flex-1">
       <header
