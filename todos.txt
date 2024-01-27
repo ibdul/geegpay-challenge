@@ -1,7 +1,3 @@
-responsiveness
-error pages
-dropdown menus
 back to top btn + jump to content button
 cookie concent + analytics, why not
-dynamic data sources: stock market || mock content
 
