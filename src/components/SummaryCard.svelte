@@ -105,7 +105,10 @@
     >
       <Icon title={item} />
     </div>
-    <div bind:this={orders_container} class="max-h-20 !min-h-20" />
+    <div
+      bind:this={orders_container}
+      class="max-h-20 !min-h-20 dark:text-dark"
+    />
   </div>
   <div>
     <h2 class="text-xl font-medium capitalize text-mute">Total {item}</h2>
