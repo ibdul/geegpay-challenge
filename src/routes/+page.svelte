@@ -172,7 +172,6 @@
   let top_platforms_colors = "bg-dark_blue, bg-blue, bg-yellow, bg-red".split(
     ", ",
   );
-  let summary_card_colors = "#66C87B, #ED544E, #ED544E, #66C87B".split(", ");
 
   onMount(async () => {
     const ApexCharts = (await import("apexcharts")).default;
@@ -204,7 +203,7 @@
     class="col-span-2 md:grid max-md:space-y-4 grid-cols-2 gap-4 grid-rows-2"
   >
     {#each "orders, refunds, sales, income".split(", ") as item, index}
-      <SummaryCard {item} color={summary_card_colors[index]} />
+      <SummaryCard {item} />
     {/each}
   </section>
   <section class="col-span-3 card space-y-4">

@@ -5,7 +5,6 @@
   import { sum, generateRandomNumber, generateSeries } from "../lib/index";
 
   export let item: string;
-  export let color: string;
 
   function differentiateSeries(series: number[][]) {
     if (series.length < 2) return generateRandomNumber();
@@ -29,7 +28,7 @@
         show: false,
       },
     },
-    colors: [color],
+    colors: [differentiateSeries(orders_series) > 0 ? "#66C87B" : "#ED544E"],
     fill: {
       type: "gradient",
       gradient: {
@@ -84,7 +83,12 @@
     orders_chart.render();
 
     setInterval(() => {
-      orders_chart.updateSeries([{ data: generateOrdersChartSeries() }]);
+      orders_chart.updateOptions({
+        series: [{ data: generateOrdersChartSeries() }],
+        colors: [
+          differentiateSeries(orders_series) >= 0 ? "#66C87B" : "#ED544E",
+        ],
+      });
     }, 5000);
   });
 </script>
