@@ -195,12 +195,14 @@
   });
 </script>
 
-<div class="p-6 grid grid-cols-5 gap-4">
+<div class="p-6 xl:grid max-xl:space-y-4 xl:grid-cols-5 gap-4">
   <section class="col-span-3 card space-y-4">
     <h2 class="card-title px-4">Sales Trends</h2>
     <div bind:this={trends_container} />
   </section>
-  <section class="col-span-2 grid grid-cols-2 gap-4 grid-rows-2">
+  <section
+    class="col-span-2 md:grid max-md:space-y-4 grid-cols-2 gap-4 grid-rows-2"
+  >
     {#each "orders, refunds, sales, income".split(", ") as item, index}
       <SummaryCard {item} color={summary_card_colors[index]} />
     {/each}

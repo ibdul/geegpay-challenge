@@ -20,6 +20,15 @@
   .card-title {
     @apply font-semibold text-lg;
   }
+  .nav_link {
+    @apply flex lg:justify-center px-2 group-hover/link:stroke-primary max-lg:group-hover/link:bg-primary/20;
+  }
+  .nav_link__container {
+    @apply aspect-square w-12 grid place-items-center rounded-full lg:group-hover/link:bg-primary/20;
+  }
+  .nav_item_title {
+    @apply lg:hidden;
+  }
 }
 
 .card::before {

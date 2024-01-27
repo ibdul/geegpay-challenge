@@ -7,7 +7,7 @@
     { title: "home", href: "/" },
     { title: "trends", href: "/trends" },
     { title: "groups", href: "/groups" },
-    { title: "packages", href: "/packages" },
+    { title: "packs", href: "/packs" },
     { title: "offers", href: "/offers" },
     { title: "info", href: "/info" },
   ];
@@ -24,6 +24,13 @@
   function setLightMode() {
     is_dark_mode = false;
     localStorage.setItem("is_dark_mode", "false");
+  }
+
+  let is_sidebar_open = false;
+
+  function toggleSidebar(e: Event) {
+    e.preventDefault();
+    is_sidebar_open = !is_sidebar_open;
   }
 
   let is_notifications_open = false;
@@ -47,39 +54,41 @@
   <div
     class="font-sans bg-light-400 text-dark dark:bg-dark dark:text-light-400 transition-default min-h-screen flex stroke-[#B2ABAB] fill-[#B2ABAB]"
   >
+    <button
+      on:click={toggleSidebar}
+      class={`bg-dark/10 z-[50] backdrop-blur fixed inset-0 transition-default ${
+        is_sidebar_open ? "" : "opacity-0 pointer-events-none"
+      }`}
+    ></button>
     <aside
-      class="border-r border-color py-8 flex flex-col gap-12 justify-between items-center max-h-screen sticky top-0"
+      class={`max-lg:fixed max-lg:w-1/3 z-[51] max-lg:shadow max-lg:pl-4 capitalize ${
+        is_sidebar_open ? "" : "max-lg:translate-x-[-100%]"
+      } bg-light-400 dark:bg-dark transition-default border-r border-color py-8 flex flex-col gap-12 justify-between lg:items-center h-screen sticky top-0`}
     >
-      <a href="/">
-        <!-- site icon -->
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="40"
-          height="40"
-          viewBox="0 0 40 40"
-          fill="none"
+      <div class="flex items-center justify-between max-lg:px-2">
+        <a href="/" class="flex gap-2 items-center">
+          <Icon title="site_icon" />
+          <div class="lg:hidden">
+            <h2 class="nav_item_title">The place</h2>
+            <p class="text-xs">Your home for finances</p>
+          </div>
+        </a>
+        <button on:click={toggleSidebar} class="lg:hidden text-lg p-2"
+          >&times;</button
         >
-          <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M20 40C31.0457 40 40 31.0457 40 20C40 8.95431 31.0457 0 20 0C8.95429 0 0 8.95431 0 20C0 31.0457 8.95429 40 20 40ZM26.2393 9.31684C26.543 8.23805 25.4961 7.60013 24.54 8.2813L11.1931 17.7896C10.1562 18.5283 10.3193 20 11.4381 20H14.9527V19.9728H21.8025L16.2212 21.9421L13.7607 30.6832C13.457 31.762 14.5038 32.3999 15.46 31.7187L28.8069 22.2105C29.8438 21.4718 29.6806 20 28.5619 20H23.2321L26.2393 9.31684Z"
-            fill="#34CAA5"
-          />
-        </svg>
-      </a>
-      <nav class="flex-1">
+      </div>
+      <nav class="flex-1 w-full text-center">
         <ul class="flex flex-col gap-4">
           {#each pages as page, index}
             <li class="relative group/link">
-              <a
-                href={page.title}
-                title={page.title}
-                class="flex justify-center px-2 group-hover/link:stroke-primary"
-              >
-                <div
-                  class="aspect-square w-12 grid place-items-center rounded-full group-hover/link:bg-primary/20"
-                >
-                  <Icon title={page.title} />
+              <a href={page.title} title={page.title} class="nav_link">
+                <div class="nav_link__container">
+                  <div class="flex gap-2 items-center">
+                    <Icon title={page.title} />
+                    <p class="nav_item_title">
+                      {page.title}
+                    </p>
+                  </div>
                 </div>
               </a>
               <div
@@ -94,7 +103,7 @@
             </li>
           {/each}
           <li
-            class="bg-light dark:bg-dark-400 p-4 px-1 mx-2 rounded-full flex flex-col gap-2 items-center fill-white stroke-none"
+            class="bg-light dark:bg-dark-400 w-min lg:p-4 px-1 max-lg:px-5 mx-2 rounded-full flex lg:flex-col gap-2 items-center fill-white stroke-none"
           >
             <button
               on:click={setLightMode}
@@ -115,15 +124,12 @@
         <ul class="flex flex-col gap-4">
           {#each extra_pages as page, index}
             <li class="relative group/link">
-              <a
-                href={page.title}
-                title={page.title}
-                class="flex justify-center px-2 group-hover/link:stroke-primary"
-              >
-                <div
-                  class="aspect-square w-12 grid place-items-center rounded-full group-hover/link:bg-primary/20"
-                >
-                  <Icon title={page.title} />
+              <a href={page.title} title={page.title} class="nav_link">
+                <div class="nav_link__container">
+                  <div class="flex gap-2 items-center">
+                    <Icon title={page.title} />
+                    <p class="nav_item_title">{page.title}</p>
+                  </div>
                 </div>
               </a>
               <div
@@ -139,9 +145,12 @@
               </div>
             </li>
           {/each}
-          <li class="mx-auto">
-            <button>
-              <Icon title="logout" />
+          <li class="lg:mx-auto">
+            <button class="hover:bg-primary/20 w-full nav_link">
+              <div class="flex gap-2 items-center">
+                <Icon title="logout" />
+                <p class="nav_item_title">Logout</p>
+              </div>
             </button>
           </li>
         </ul>
@@ -149,11 +158,16 @@
     </aside>
     <div class="flex-1">
       <header
-        class="flex justify-between items-center py-4 px-8 border-b border-color"
+        class="flex bg-light-400 dark:bg-dark max-lg:shadow-md sticky top-0 z-[49] justify-between items-center py-4 px-8 border-b border-color"
       >
-        <h1 class="font-semibold text-xl">Dashboard</h1>
+        <div class="flex items-center gap-2">
+          <a href="/" class="lg:hidden">
+            <Icon title="site_icon" />
+          </a>
+          <h1 class="font-semibold text-xl">Dashboard</h1>
+        </div>
         <div class="flex items-center gap-4">
-          <form>
+          <form class="max-md:hidden">
             <div
               class="focus-within:outline outline-1 outline-primary rounded-full bg-white dark:bg-dark-400 px-4 py-2 border border-[#DADDDD] dark:border-mute flex gap-2 items-center"
             >
@@ -165,9 +179,13 @@
               />
             </div>
           </form>
-          <div class="flex items-center gap-2 stroke-black dark:stroke-light">
+          <div
+            class="flex items-center gap-2 stroke-black dark:stroke-light max-lg:hidden"
+          >
             <Icon title="calendar" />
-            <p class="text-sm font-medium">{new Date().toLocaleString()}</p>
+            <p class="text-sm font-medium">
+              {new Date().toLocaleString()}
+            </p>
           </div>
           <button
             on:click={openNotifications}
@@ -176,7 +194,13 @@
             <Icon title="bell" />
           </button>
           <button
-            class="flex items-center p-2 rounded-full gap-2 border border-color"
+            title="Ibrahim Abdulhameed"
+            class="xl:hidden p-2 aspect-square w-12 grid place-items-center border border-color rounded-full"
+          >
+            <div class="rounded-full bg-primary aspect-square w-8"></div>
+          </button>
+          <button
+            class="max-xl:hidden flex items-center p-2 rounded-full gap-2 border border-color"
           >
             <div class="rounded-full bg-primary aspect-square w-8"></div>
             <div class="flex flex-col">
@@ -184,6 +208,12 @@
               <p class="text-sm text-mute">@iAmIbdul</p>
             </div>
             <Icon title="arrow-down" />
+          </button>
+          <button
+            on:click={toggleSidebar}
+            class="lg:hidden p-2 aspect-square w-12"
+          >
+            <Icon title="menu" />
           </button>
         </div>
       </header>
@@ -198,7 +228,7 @@
           }`}
         ></button>
         <div
-          class={`bg-light dark:bg-dark shadow-md z-[51] fixed right-0 w-1/4 inset-y-0 py-12 space-y-4 ${
+          class={`bg-light dark:bg-dark shadow-md z-[51] fixed right-0 w-[90vw] lg:w-1/2 2xl:w-1/4 inset-y-0 py-12 space-y-4 ${
             is_notifications_open ? "" : "translate-x-[100%]"
           }`}
         >
