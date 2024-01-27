@@ -4,12 +4,10 @@
   import Icon from "../components/Icon.svelte";
   import SummaryCard from "../components/SummaryCard.svelte";
   import {
-    sum,
     viewTransition,
     generateSeries,
     generateRandomNumber,
     CHART_MAX,
-    CHART_MIN,
   } from "../lib/index";
 
   function getRandomFromArray(arr: any[]) {
@@ -109,6 +107,8 @@
     tooltip: {
       enabled: true,
       followCursor: false,
+
+      //@ts-ignore
       custom: function ({ series, seriesIndex, dataPointIndex, w }) {
         return (
           '<div class="arrow_box bg-dark mx-auto text-center text-light rounded-md border-none px-4">' +
