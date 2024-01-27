@@ -96,7 +96,7 @@
           <ul class="flex flex-col gap-4">
             {#each pages as page, index}
               <li class="relative group/link">
-                <a href={page.title} title={page.title} class="nav_link">
+                <a href={page.href} title={page.title} class="nav_link">
                   <div class="nav_link__container">
                     <div class="flex gap-2 items-center">
                       <Icon title={page.title} />
@@ -139,7 +139,7 @@
           <ul class="flex flex-col gap-4">
             {#each extra_pages as page, index}
               <li class="relative group/link">
-                <a href={page.title} title={page.title} class="nav_link">
+                <a href={page.href} title={page.title} class="nav_link">
                   <div class="nav_link__container">
                     <div class="flex gap-2 items-center">
                       <Icon title={page.title} />
