@@ -91,7 +91,10 @@
           >&times;</button
         >
       </div>
-      <div class="flex-1 space-y-12 overflow-y-auto">
+      <div
+        class="flex-1 space-y-12 scrollbar-hidden overflow-y-auto"
+        style=" mask-image: linear-gradient(transparent, red 2%, red 98%, transparent); "
+      >
         <nav class="w-full text-center">
           <ul class="flex flex-col gap-4">
             {#each pages as page, index}
@@ -118,7 +121,7 @@
               </li>
             {/each}
             <li
-              class="bg-light dark:bg-dark-400 w-min lg:p-4 px-1 max-lg:px-5 mx-2 rounded-full flex lg:flex-col gap-2 items-center fill-white stroke-none"
+              class="bg-light dark:bg-dark-400 w-min lg:py-4 px-1 max-lg:px-5 mx-2 rounded-full flex lg:flex-col gap-2 items-center fill-white stroke-none"
             >
               <button
                 on:click={setLightMode}
@@ -191,7 +194,7 @@
               <input
                 type="text"
                 placeholder="Search"
-                class="bg-transparent focus:outline-none"
+                class="bg-transparent focus:outline-none text-sm"
               />
             </div>
           </form>
@@ -219,9 +222,9 @@
             class="max-xl:hidden flex items-center p-2 rounded-full gap-2 border border-color"
           >
             <div class="rounded-full bg-primary aspect-square w-8"></div>
-            <div class="flex flex-col">
+            <div class="text-sm flex flex-col">
               <p>Ibrahim A.</p>
-              <p class="text-sm text-mute">@iAmIbdul</p>
+              <p class="text-xs text-mute">@iAmIbdul</p>
             </div>
             <Icon title="arrow-down" />
           </button>
