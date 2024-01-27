@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import PlatformMinCard from "../components/PlatformMinCard.svelte";
   import Icon from "../components/Icon.svelte";
   import SummaryCard from "../components/SummaryCard.svelte";
@@ -177,6 +177,7 @@
     ", ",
   );
 
+  let interval: number;
   onMount(async () => {
     const ApexCharts = (await import("apexcharts")).default;
     const _chart = new ApexCharts(trends_container, trends_options);
@@ -186,7 +187,7 @@
       generateTopPlatformData(platform);
     });
 
-    setInterval(() => {
+    interval = setInterval(() => {
       _chart.updateSeries([{ data: generateSeries() }]);
 
       viewTransition(() => {
@@ -197,6 +198,11 @@
         generateTopPlatformData(platform);
       });
     }, 5000);
+  });
+  onDestroy(() => {
+    if (interval) {
+      clearInterval(interval);
+    }
   });
 </script>
 

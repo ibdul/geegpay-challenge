@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import DifferencePill from "./DifferencePill.svelte";
   import Icon from "./Icon.svelte";
   import { sum, generateRandomNumber, generateSeries } from "../lib/index";
@@ -77,12 +77,13 @@
 
   let orders_container: any;
 
+  let interval: number;
   onMount(async () => {
     const ApexCharts = (await import("apexcharts")).default;
     const orders_chart = new ApexCharts(orders_container, orders_options);
     orders_chart.render();
 
-    setInterval(() => {
+    interval = setInterval(() => {
       orders_chart.updateOptions({
         series: [{ data: generateOrdersChartSeries() }],
         colors: [
@@ -90,6 +91,10 @@
         ],
       });
     }, 5000);
+  });
+
+  onDestroy(() => {
+    clearInterval(interval);
   });
 </script>
 
