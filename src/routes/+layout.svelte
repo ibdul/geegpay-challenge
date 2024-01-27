@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { onNavigate } from "$app/navigation";
   import Icon from "../components/Icon.svelte";
   import "./base.css";
 
@@ -47,6 +48,17 @@
 
   onMount(() => {
     is_dark_mode = localStorage.getItem("is_dark_mode") == "true";
+  });
+
+  onNavigate((navigation) => {
+    if (!document.startViewTransition) return;
+
+    return new Promise((resolve) => {
+      document.startViewTransition(async () => {
+        resolve();
+        await navigation.complete;
+      });
+    });
   });
 </script>
 

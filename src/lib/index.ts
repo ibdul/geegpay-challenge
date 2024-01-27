@@ -14,3 +14,10 @@
     return series.reduce((cur, acc) => acc + cur);
   }
 
+	export function viewTransition(action:()=>void){
+		if (!document.startViewTransition) {
+			action();
+			return;
+		}
+		document.startViewTransition(action);
+	}

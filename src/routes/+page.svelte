@@ -5,6 +5,7 @@
   import SummaryCard from "../components/SummaryCard.svelte";
   import {
     sum,
+    viewTransition,
     generateSeries,
     generateRandomNumber,
     CHART_MAX,
@@ -20,8 +21,11 @@
       ", ",
     );
 
+  let order_count = 0;
   function createOrder() {
+    order_count += 1;
     return {
+      id: order_count - 1,
       name: names[Math.floor(Math.random() * names.length)],
       date: new Date(),
       amount: (Math.random() * (14000 - 1200) + 1200).toFixed(2),
@@ -185,7 +189,9 @@
     setInterval(() => {
       _chart.updateSeries([{ data: generateSeries() }]);
 
-      updateOrders();
+      viewTransition(() => {
+        updateOrders();
+      });
 
       top_platform_names.map((platform, index) => {
         generateTopPlatformData(platform);
@@ -220,7 +226,10 @@
         <p>Invoice</p>
       </div>
       {#each orders.slice(0, 4) as order}
-        <li class="grid grid-cols-6 py-2 items-center">
+        <li
+          class={`grid grid-cols-6 py-2 items-center`}
+          style={`view-transition-name:order-${order.id};`}
+        >
           <div
             class="col-span-2 text-black dark:text-light font-medium flex items-center gap-2"
           >
