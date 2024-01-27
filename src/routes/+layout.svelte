@@ -182,7 +182,7 @@
           </a>
           <h1 class="font-semibold text-xl">Dashboard</h1>
         </div>
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-1 lg:gap-4">
           <form class="max-md:hidden">
             <div
               class="focus-within:outline outline-1 outline-primary rounded-full bg-white dark:bg-dark-400 px-4 py-2 border border-[#DADDDD] dark:border-mute flex gap-2 items-center"
