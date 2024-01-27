@@ -5,6 +5,7 @@
   import SummaryCard from "../components/SummaryCard.svelte";
   import {
     viewTransition,
+    formatCurrency,
     generateSeries,
     generateRandomNumber,
     CHART_MAX,
@@ -126,7 +127,7 @@
       },
     },
     fill: {
-      colors: ["#EBFAF6", "#39cba7"],
+      colors: ["#34caa596", "#39cba7"],
     },
     legend: { show: false },
     plotOptions: {
@@ -173,9 +174,8 @@
   };
   let trends_container: any;
 
-  let top_platforms_colors = "bg-dark_blue, bg-blue, bg-yellow, bg-red".split(
-    ", ",
-  );
+  let top_platforms_colors =
+    "bg-[#6160DC], bg-blue, bg-[#FFB74A], bg-red".split(", ");
 
   let interval: number;
   onMount(async () => {
@@ -250,7 +250,9 @@
             {order.date.toLocaleString()}
           </p>
           <p class="font-semibold">
-            <span class="text-mute lg:hidden">Amount: </span>${order.amount}
+            <span class="text-mute lg:hidden">Amount: </span>${formatCurrency(
+              Number(order.amount),
+            )}
           </p>
           <p>
             <span class="text-mute lg:hidden">Status: </span>
@@ -258,11 +260,12 @@
               {order.is_paid ? "Paid" : "Not paid"}
             </span>
           </p>
-          <p
-            class="flex gap-2 text-black items-center stroke-black/40 dark:text-light dark:stroke-light/40"
+          <a
+            href="#"
+            class="hover:underline flex gap-2 text-black items-center stroke-black/40 dark:text-light dark:stroke-light/40"
           >
             <Icon title="doc-download" /> View
-          </p>
+          </a>
         </li>
       {/each}
     </ul>
