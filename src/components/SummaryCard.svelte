@@ -93,7 +93,7 @@
   });
 </script>
 
-<div class="card flex flex-col justify-between">
+<div class="card flex flex-col justify-between gap-2">
   <div class="flex justify-between items-start">
     <div
       class="p-2 aspect-square w-12 grid place-items-center border border-color rounded-full"
