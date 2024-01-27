@@ -206,7 +206,7 @@
   });
 </script>
 
-<div class="p-6 xl:grid max-xl:space-y-4 xl:grid-cols-5 gap-4">
+<div class="p-2 sm:p-6 xl:grid max-xl:space-y-4 xl:grid-cols-5 gap-4">
   <section class="col-span-3 card space-y-4">
     <h2 class="card-title px-4">Sales Trends</h2>
     <div bind:this={trends_container} />
@@ -224,7 +224,7 @@
       <a href="/orders" class="text-primary">See all</a>
     </div>
     <ul class="divide-y divide-mute/20 space-y-2">
-      <div class="grid grid-cols-6 text-mute py-2">
+      <div class="max-lg:hidden grid grid-cols-6 gap-2 text-mute py-2">
         <p class="col-span-2">Name</p>
         <p>Date</p>
         <p>Amount</p>
@@ -233,21 +233,32 @@
       </div>
       {#each orders.slice(0, 4) as order}
         <li
-          class={`grid grid-cols-6 py-2 items-center`}
+          class="lg:grid flex flex-col grid-cols-6 gap-2 py-4 lg:py-2 items-center"
           style={`view-transition-name:order-${order.id};`}
         >
           <div
-            class="col-span-2 text-black dark:text-light font-medium flex items-center gap-2"
+            class="col-span-2 text-black dark:text-light font-medium flex max-lg:flex-col items-center gap-2"
           >
             <img width={50} src={order.avatar} alt="avatar" />
-            <p>{order.name}</p>
+            <div class="max-lg:text-center">
+              <p>{order.name}</p>
+              <p class="lg:hidden text-sm text-mute dark:text-light-400/80">
+                {order.date.toLocaleString()}
+              </p>
+            </div>
           </div>
-          <p class="text-mute dark:text-light-400/80">
+
+          <p class="max-lg:hidden text-mute dark:text-light-400/80">
             {order.date.toLocaleString()}
           </p>
-          <p class="font-semibold">${order.amount}</p>
-          <p class={order.is_paid ? "text-primary" : "text-red"}>
-            {order.is_paid ? "Paid" : "Not paid"}
+          <p class="font-semibold">
+            <span class="text-mute lg:hidden">Amount: </span>${order.amount}
+          </p>
+          <p>
+            <span class="text-mute lg:hidden">Status: </span>
+            <span class={order.is_paid ? "text-primary" : "text-red"}>
+              {order.is_paid ? "Paid" : "Not paid"}
+            </span>
           </p>
           <p
             class="flex gap-2 text-black items-center stroke-black/40 dark:text-light dark:stroke-light/40"

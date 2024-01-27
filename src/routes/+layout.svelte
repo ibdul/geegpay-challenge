@@ -75,9 +75,9 @@
       }`}
     ></button>
     <aside
-      class={`max-lg:fixed z-[51] max-lg:shadow max-lg:pl-4 capitalize ${
+      class={`max-lg:fixed z-[51] inset-y-0 max-lg:shadow max-lg:pl-4 capitalize ${
         is_sidebar_open ? "" : "max-lg:translate-x-[-100%]"
-      } bg-light-400 dark:bg-dark transition-default border-r border-color py-8 flex flex-col gap-12 justify-between lg:items-center h-screen sticky top-0`}
+      } bg-light-400 dark:bg-dark transition-default border-r border-color py-8 flex flex-col gap-12 justify-between lg:items-center lg:h-screen sticky top-0`}
     >
       <div class="flex items-center justify-between max-lg:px-2">
         <a href="/" class="flex gap-2 items-center">
@@ -91,8 +91,8 @@
           >&times;</button
         >
       </div>
-      <div class="space-y-12 overflow-y-auto">
-        <nav class="flex-1 w-full text-center">
+      <div class="flex-1 space-y-12 overflow-y-auto">
+        <nav class="w-full text-center">
           <ul class="flex flex-col gap-4">
             {#each pages as page, index}
               <li class="relative group/link">
@@ -171,7 +171,6 @@
           </ul>
         </nav>
       </div>
-      <div class="3xl:hidden"></div>
     </aside>
     <div class="flex-1">
       <header

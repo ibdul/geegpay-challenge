@@ -12,7 +12,7 @@
     @apply border-[#EBECF2] dark:border-[#EBECF2]/10;
   }
   .card {
-    @apply bg-light dark:bg-dark-400 rounded-xl p-4 border border-[#EDF2F7] hover:border-dark/10 dark:border-[#EBECF2]/10 relative;
+    @apply bg-light dark:bg-dark-400 rounded-xl px-2 py-4 sm:p-4 border border-[#EDF2F7] hover:border-dark/10 dark:border-[#EBECF2]/10 relative;
   }
   .card::before {
     @apply content-[""] absolute bg-black inset-[-1px] rounded-xl z-[-1];
